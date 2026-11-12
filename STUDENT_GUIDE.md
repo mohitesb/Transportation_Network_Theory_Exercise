@@ -7,16 +7,16 @@ You are going to download a real road network and make three maps. Each map colo
 ## Steps
 
 1. Under **Get a road network**, leave the choice on **Download with OSMnx**.
-2. Type a place, for example `Newark, Delaware, USA`, click **Find this place**, then choose **Which roads?** The page lists what each choice downloads:
+2. Type a town or city of 20 square miles or less, for example `Newark, Delaware, USA`, click **Find this place**, then choose **Which roads?** The page lists what each choice downloads:
    - **All drivable streets** — public roads a car can use, from interstates down to neighborhood streets. This is `graph_from_place(place, network_type="drive")`.
    - **Main roads, including secondary** — interstates, other major highways, primary roads, and secondary roads, including ramps.
    - **Highways and primary roads only** — interstates, other major highways, and primary roads, including ramps.
    Then click **Download roads**.
 3. After it loads, you can save **roads.geojson** and the zipped shapefile (`roads.shp` inside the zip).
 4. If the download times out, switch to **Load a file from OpenStreetMap**. Open [Overpass Turbo](https://overpass-turbo.eu), click **Wizard**, paste a line, and click **build and run**.
-   - A town or city: `highway=* in "Newark, Delaware"`
-   - A big city or a state: `highway~"motorway|trunk|primary|secondary" in "Delaware"`
-   Then **Export → GeoJSON** or **raw OSM data**, upload that file, and click **Use this file**.
+   - A town or city, every street: `highway=* in "Newark, Delaware"`
+   - A town or city, main roads only: `highway~"motorway|trunk|primary|secondary" in "Wilmington, Delaware"`
+   Then **Export → GeoJSON** or **raw OSM data**, upload that file, and click **Use this file**. Uploads are limited to 25 MB and about 20,000 intersections, so stick to a town or small city.
 5. Look at the preview. Lines are roads. Ends of lines are intersections. The axes are miles from the center of the network.
 6. Leave distance on **Unweighted** and click **Calculate**.
 7. Three maps appear in one row: closeness, betweenness, and degree. Warm colors are high. Cool colors are low. Gray lines are the roads.
@@ -24,7 +24,6 @@ You are going to download a real road network and make three maps. Each map colo
 9. Above **Explore on a street map**, choose a centrality and hover an intersection to read its name. Drag the map to move it, and scroll to zoom. In the table under the map, click a row: the map zooms to that intersection and the point flashes for a few seconds. The point keeps its color. Hover a point to read degree centrality, betweenness, and closeness.
 10. Answer the questions, then download the submission package.
 
-A whole state can also come from [Geofabrik](https://download.geofabrik.de/) as a shapefile zip. Upload the zip. The lab keeps main roads when the file is huge.
 
 ## The three measures
 

@@ -1,5 +1,6 @@
 [server]
-maxUploadSize = 500
+# Megabytes. Keep in step with LAB_MAX_UPLOAD_MB (network_theory/load_network.py).
+maxUploadSize = 25
 fileWatcherType = "none"
 
 [browser]

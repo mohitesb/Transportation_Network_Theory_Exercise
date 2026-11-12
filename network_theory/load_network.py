@@ -210,6 +210,20 @@ def download_area_message(area_km2: float | None) -> str:
     )
 
 
+# Upload limits. Override with environment variables without editing code.
+# Keep MAX_UPLOAD_MB in step with server.maxUploadSize in .streamlit/config.toml.
+MAX_UPLOAD_MB = float(os.environ.get("LAB_MAX_UPLOAD_MB", "25"))
+MAX_UNZIPPED_MB = 4 * MAX_UPLOAD_MB
+MAX_UPLOAD_INTERSECTIONS = int(os.environ.get("LAB_MAX_UPLOAD_INTERSECTIONS", "20000"))
+
+
+def upload_limits_text() -> str:
+    return (
+        f"Files up to {MAX_UPLOAD_MB:,.0f} MB in total, and networks up to "
+        f"{MAX_UPLOAD_INTERSECTIONS:,} intersections (about the size of a small city)."
+    )
+
+
 def streets_are_blocked(kind: str, area_km2: float | None) -> bool:
     return kind in _HEAVY_KINDS and area_km2 is not None and area_km2 >= 20000
 
@@ -305,6 +319,12 @@ def load_uploads(files: list) -> RoadNetwork:
     """Read one upload, or a nodes CSV together with an edges CSV."""
     if not files:
         raise NetworkLabError("Choose a file first.")
+    total_mb = sum(len(item.getvalue()) for item in files) / (1024 * 1024)
+    if total_mb > MAX_UPLOAD_MB:
+        raise NetworkLabError(
+            f"Those files add up to {total_mb:,.1f} MB. This lab accepts up to {MAX_UPLOAD_MB:,.0f} MB. "
+            "Export a smaller place (a town or small city), or only main roads."
+        )
     folder = CACHE_DIR / "uploads" / uuid.uuid4().hex
     folder.mkdir(parents=True, exist_ok=True)
     paths = []
@@ -313,7 +333,14 @@ def load_uploads(files: list) -> RoadNetwork:
         path = folder / name
         path.write_bytes(item.getvalue())
         paths.append(path)
-    return load_paths(paths)
+    network = load_paths(paths)
+    if network.n > MAX_UPLOAD_INTERSECTIONS:
+        raise NetworkLabError(
+            f"That network has {network.n:,} intersections. This lab accepts up to "
+            f"{MAX_UPLOAD_INTERSECTIONS:,}, so the whole class can share the server. "
+            "Export a smaller place (a town or small city), or only main roads."
+        )
+    return network
 
 
 def load_paths(paths: list[Path]) -> RoadNetwork:
@@ -1260,6 +1287,12 @@ def _expand_archives(paths: list[Path]) -> list[Path]:
 
 def _safe_extract(archive: zipfile.ZipFile, destination: Path) -> None:
     root = destination.resolve()
+    unzipped_mb = sum(member.file_size for member in archive.infolist()) / (1024 * 1024)
+    if unzipped_mb > MAX_UNZIPPED_MB:
+        raise NetworkLabError(
+            f"That zip unpacks to {unzipped_mb:,.0f} MB, more than this lab accepts "
+            f"({MAX_UNZIPPED_MB:,.0f} MB). Export a smaller place, or only main roads."
+        )
     for member in archive.infolist():
         target = (destination / member.filename).resolve()
         if root != target and root not in target.parents:

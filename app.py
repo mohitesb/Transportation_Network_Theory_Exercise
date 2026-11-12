@@ -36,6 +36,7 @@ from network_theory.load_network import (
     streets_need_confirm,
     to_miles,
     to_square_miles,
+    upload_limits_text,
 )
 from network_theory.plotting import (
     centrality_figure,
@@ -278,15 +279,13 @@ def _upload_form() -> None:
     )
     st.caption("A town or city — every street")
     st.code('highway=* in "Newark, Delaware"', language=None)
-    st.caption("A big city or a state — main roads only")
-    st.code('highway~"motorway|trunk|primary|secondary" in "Delaware"', language=None)
-    with st.expander("Whole state from Geofabrik, or another file you already have"):
+    st.caption("A town or city — main roads only (smaller file)")
+    st.code('highway~"motorway|trunk|primary|secondary" in "Wilmington, Delaware"', language=None)
+    st.warning(f"Size limit: {upload_limits_text()} Counties, states, and large cities are too big.")
+    with st.expander("Other files you already have"):
         st.markdown(
-            "For a state, you can also open [Geofabrik](https://download.geofabrik.de/), "
-            "choose the state, and download the **shapefile** (`.shp.zip`). Upload that zip. "
-            "A full state of local streets is too large, so the lab keeps main roads.\n\n"
-            "Other files that work: GeoJSON, `.osm`, GraphML, GeoPackage, "
-            "or a CSV with columns `source` and `target`."
+            "Other files that work: GeoJSON, `.osm`, GraphML, GeoPackage, a shapefile zip, "
+            "or a CSV with columns `source` and `target`. Your instructor may give you a GraphML file."
         )
         st.write(
             "Intersections are where roads share a point. Bend points along one road are merged. "

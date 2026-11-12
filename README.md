@@ -30,7 +30,7 @@ python scripts/check_lab.py
 ## What students do
 
 1. Choose **Download with OSMnx**. Type a place, for example Newark, Delaware, USA, and download. That call is `graph_from_place(place, network_type="drive")`. The page then offers the roads as GeoJSON and as a zipped shapefile.
-2. If that download times out, choose **Load a file from OpenStreetMap**. In [Overpass Turbo](https://overpass-turbo.eu), use the Wizard (`highway=* in "Newark, Delaware"` for a city, or main roads only for Delaware), then **Export → GeoJSON** or **raw OSM data**, and upload the file. A Geofabrik `.shp.zip` works too; a huge state extract is reduced to main roads.
+2. If that download times out, choose **Load a file from OpenStreetMap**. In [Overpass Turbo](https://overpass-turbo.eu), use the Wizard (`highway=* in "Newark, Delaware"` for a town or city, or main roads only for a slightly larger city), then **Export → GeoJSON** or **raw OSM data**, and upload the file. Uploads must stay within the limits below.
 3. Leave distance on **Unweighted** for the first map. Calculate. The closeness map is the one that looks like a warm center and a cool edge.
 4. The page shows the closeness, betweenness, and degree figures. Switch distance to **Length-weighted** and calculate again. Above the street map, choose which centrality to explore. Drag to pan and scroll to zoom. Clicking a row in the table under the map zooms to that intersection and flashes the point for a few seconds, still in its centrality color. Hovering a point lists degree centrality as well as the other scores.
 5. Answer the questions on the page and download the submission package (three PNGs, the table, and the answers). Students name the intersections with the highest degree centrality, betweenness, and closeness, then say where they would put a fire station, a rest stop for people traveling between other places, and a roundabout where the most roads already meet.
@@ -38,6 +38,22 @@ python scripts/check_lab.py
 Hand out [STUDENT_GUIDE.md](STUDENT_GUIDE.md) if you want the questions on paper.
 
 ## Road class and network size
+
+**Download limit:** the built-in OSMnx download only accepts places whose boundary is 20 square miles or smaller (towns and small cities such as Newark or Wilmington, Delaware). Larger places, such as Philadelphia, counties, or states, are refused, so many students can share one server.
+
+**Upload limits:** uploads can total up to 25 MB, a zip can unpack to at most 100 MB, and the network can have up to 20,000 intersections. Bigger files are refused with a message.
+
+All limits can be changed with environment variables, with no code edits:
+
+| Variable | Default | Controls |
+| --- | --- | --- |
+| `LAB_MAX_DOWNLOAD_SQ_MILES` | 20 | Largest place boundary for the OSMnx download |
+| `LAB_MAX_UPLOAD_MB` | 25 | Total upload size (zip limit is 4× this) |
+| `LAB_MAX_UPLOAD_INTERSECTIONS` | 20000 | Largest uploaded network |
+
+If you raise `LAB_MAX_UPLOAD_MB`, also raise `maxUploadSize` in `.streamlit/config.toml` (or set `STREAMLIT_SERVER_MAX_UPLOAD_SIZE`), because Streamlit rejects larger files before the app sees them.
+
+The table below describes what each road class downloads when the limit is raised.
 
 | Place | Use | What is downloaded |
 | --- | --- | --- |
