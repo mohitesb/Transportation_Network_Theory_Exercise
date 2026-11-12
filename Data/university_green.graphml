@@ -1,0 +1,350 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="d12" for="edge" attr.name="names" attr.type="string" />
+  <key id="d11" for="edge" attr.name="length" attr.type="double" />
+  <key id="d10" for="node" attr.name="lat" attr.type="double" />
+  <key id="d9" for="node" attr.name="lon" attr.type="double" />
+  <key id="d8" for="node" attr.name="y_km" attr.type="double" />
+  <key id="d7" for="node" attr.name="x_km" attr.type="double" />
+  <key id="d6" for="node" attr.name="y" attr.type="double" />
+  <key id="d5" for="node" attr.name="x" attr.type="double" />
+  <key id="d4" for="node" attr.name="label" attr.type="string" />
+  <key id="d3" for="graph" attr.name="geographic" attr.type="string" />
+  <key id="d2" for="graph" attr.name="official_name" attr.type="string" />
+  <key id="d1" for="graph" attr.name="kind_label" attr.type="string" />
+  <key id="d0" for="graph" attr.name="title" attr.type="string" />
+  <graph edgedefault="undirected">
+    <node id="178653617">
+      <data key="d4">East Cleveland Avenue &amp; Kershaw Street</data>
+      <data key="d5">435713.9513050828</data>
+      <data key="d6">4393237.08655189</data>
+      <data key="d7">0.06030896316457074</data>
+      <data key="d8">0.3797658984130248</data>
+      <data key="d9">-75.7496988</data>
+      <data key="d10">39.686552</data>
+    </node>
+    <node id="178689387">
+      <data key="d4">East Cleveland Avenue &amp; Wilbur Street</data>
+      <data key="d5">435537.1547372414</data>
+      <data key="d6">4393185.699597626</data>
+      <data key="d7">-0.11648760467686224</data>
+      <data key="d8">0.32837894414924085</data>
+      <data key="d9">-75.7517554</data>
+      <data key="d10">39.6860757</data>
+    </node>
+    <node id="178661146">
+      <data key="d4">North College Avenue &amp; West Main Street</data>
+      <data key="d5">435335.7011448081</data>
+      <data key="d6">4392845.629213439</data>
+      <data key="d7">-0.3179411971101654</data>
+      <data key="d8">-0.011691440037451685</data>
+      <data key="d9">-75.7540712</data>
+      <data key="d10">39.6829966</data>
+    </node>
+    <node id="2601214708">
+      <data key="d4">West Main Street &amp; South Main Street</data>
+      <data key="d5">435167.6206489407</data>
+      <data key="d6">4392843.791533273</data>
+      <data key="d7">-0.4860216929775779</data>
+      <data key="d8">-0.013529120204038918</data>
+      <data key="d9">-75.7560309</data>
+      <data key="d10">39.6829673</data>
+    </node>
+    <node id="178672994">
+      <data key="d4">South College Avenue &amp; Amstel Avenue</data>
+      <data key="d5">435374.9258662599</data>
+      <data key="d6">4392517.5906668855</data>
+      <data key="d7">-0.27871647565835156</data>
+      <data key="d8">-0.33972998659126463</data>
+      <data key="d9">-75.7535817</data>
+      <data key="d10">39.6800441</data>
+    </node>
+    <node id="178633085">
+      <data key="d4">East Main Street &amp; Academy Street</data>
+      <data key="d5">435739.68725056836</data>
+      <data key="d6">4392878.816999744</data>
+      <data key="d7">0.08604490865010303</data>
+      <data key="d8">0.021496346266940237</data>
+      <data key="d9">-75.7493638</data>
+      <data key="d10">39.6833261</data>
+    </node>
+    <node id="178650877">
+      <data key="d4">South Chapel Street &amp; Continental Avenue</data>
+      <data key="d5">436138.8548412672</data>
+      <data key="d6">4392514.809040584</data>
+      <data key="d7">0.4852124993489706</data>
+      <data key="d8">-0.3425116128930822</data>
+      <data key="d9">-75.7446741</data>
+      <data key="d10">39.6800765</data>
+    </node>
+    <node id="178633087">
+      <data key="d4">East Main Street &amp; Haines Street</data>
+      <data key="d5">435900.2349409617</data>
+      <data key="d6">4392894.848295374</data>
+      <data key="d7">0.246592599043448</data>
+      <data key="d8">0.03752764189708978</data>
+      <data key="d9">-75.7474933</data>
+      <data key="d10">39.6834826</data>
+    </node>
+    <node id="178674738">
+      <data key="d4">Lovett Avenue &amp; Haines Street</data>
+      <data key="d5">435947.2849927256</data>
+      <data key="d6">4392410.890833154</data>
+      <data key="d7">0.2936426508073346</data>
+      <data key="d8">-0.4464298203224316</data>
+      <data key="d9">-75.7468977</data>
+      <data key="d10">39.6791259</data>
+    </node>
+    <node id="178685453">
+      <data key="d4">North College Avenue &amp; East Cleveland Avenue &amp; West Cleveland Avenue</data>
+      <data key="d5">435306.8775371483</data>
+      <data key="d6">4393154.722876456</data>
+      <data key="d7">-0.34676480476994764</data>
+      <data key="d8">0.29740222297888247</data>
+      <data key="d9">-75.7544376</data>
+      <data key="d10">39.6857792</data>
+    </node>
+    <node id="178633089">
+      <data key="d4">North Chapel Street &amp; East Main Street &amp; South Chapel Street</data>
+      <data key="d5">436069.2727070533</data>
+      <data key="d6">4392910.956668593</data>
+      <data key="d7">0.41563036513503177</data>
+      <data key="d8">0.053636015116237105</data>
+      <data key="d9">-75.7455238</data>
+      <data key="d10">39.6836404</data>
+    </node>
+    <node id="178662847">
+      <data key="d4">North Chapel Street &amp; New Street</data>
+      <data key="d5">436025.79684081324</data>
+      <data key="d6">4393149.710092922</data>
+      <data key="d7">0.37215449889498997</data>
+      <data key="d8">0.29238943944498896</data>
+      <data key="d9">-75.7460539</data>
+      <data key="d10">39.6857882</data>
+    </node>
+    <node id="178654676">
+      <data key="d4">East Delaware Avenue &amp; Academy Street</data>
+      <data key="d5">435728.6437003628</data>
+      <data key="d6">4392729.201010723</data>
+      <data key="d7">0.07500135844456964</data>
+      <data key="d8">-0.12811964275408536</data>
+      <data key="d9">-75.749478</data>
+      <data key="d10">39.6819773</data>
+    </node>
+    <node id="178654677">
+      <data key="d4">East Delaware Avenue &amp; Haines Street</data>
+      <data key="d5">435915.02892732585</data>
+      <data key="d6">4392746.626305134</data>
+      <data key="d7">0.26138658540759935</data>
+      <data key="d8">-0.1106943483427167</data>
+      <data key="d9">-75.7473064</data>
+      <data key="d10">39.6821483</data>
+    </node>
+    <node id="178633083">
+      <data key="d4">South College Avenue &amp; West Main Street &amp; East Main Street</data>
+      <data key="d5">435373.70474272664</data>
+      <data key="d6">4392847.019216706</data>
+      <data key="d7">-0.27993759919161676</data>
+      <data key="d8">-0.010301436770707368</data>
+      <data key="d9">-75.7536282</data>
+      <data key="d10">39.683012</data>
+    </node>
+    <node id="178650875">
+      <data key="d4">Haines Street &amp; Continental Avenue</data>
+      <data key="d5">435940.21162950905</data>
+      <data key="d6">4392481.219711941</data>
+      <data key="d7">0.2865692875907989</data>
+      <data key="d8">-0.37610094153601675</data>
+      <data key="d9">-75.746987</data>
+      <data key="d10">39.679759</data>
+    </node>
+    <node id="178674736">
+      <data key="d4">Academy Street &amp; Lovett Avenue</data>
+      <data key="d5">435707.1507802624</data>
+      <data key="d6">4392463.22897479</data>
+      <data key="d7">0.05350843834417174</data>
+      <data key="d8">-0.39409167868644</data>
+      <data key="d9">-75.7497027</data>
+      <data key="d10">39.6795794</data>
+    </node>
+    <node id="3640983633">
+      <data key="d4">East Main Street &amp; Farmer Lane</data>
+      <data key="d5">436230.541826713</data>
+      <data key="d6">4392926.267375786</data>
+      <data key="d7">0.5768994847947615</data>
+      <data key="d8">0.0689467223091051</data>
+      <data key="d9">-75.7436448</data>
+      <data key="d10">39.6837904</data>
+    </node>
+    <node id="178668015">
+      <data key="d4">West Delaware Avenue &amp; Orchard Road</data>
+      <data key="d5">435225.6874889338</data>
+      <data key="d6">4392693.838234153</data>
+      <data key="d7">-0.42795485298446145</data>
+      <data key="d8">-0.16348241932410748</data>
+      <data key="d9">-75.7553391</data>
+      <data key="d10">39.6816207</data>
+    </node>
+    <node id="178654675">
+      <data key="d4">South College Avenue &amp; East Delaware Avenue &amp; West Delaware Avenue</data>
+      <data key="d5">435372.8593921736</data>
+      <data key="d6">4392695.3200639915</data>
+      <data key="d7">-0.28078294974466556</data>
+      <data key="d8">-0.1620005894852802</data>
+      <data key="d9">-75.7536232</data>
+      <data key="d10">39.6816452</data>
+    </node>
+    <node id="178626526">
+      <data key="d4">North College Avenue &amp; Prospect Avenue</data>
+      <data key="d5">435296.4664254314</data>
+      <data key="d6">4393260.7429561075</data>
+      <data key="d7">-0.35717591648682717</data>
+      <data key="d8">0.40342230263073</data>
+      <data key="d9">-75.7545694</data>
+      <data key="d10">39.6867336</data>
+    </node>
+    <node id="178685457">
+      <data key="d4">West Cleveland Avenue &amp; Rose Street</data>
+      <data key="d5">435021.1608762609</data>
+      <data key="d6">4393143.611685788</data>
+      <data key="d7">-0.6324814656573581</data>
+      <data key="d8">0.28629103231150654</data>
+      <data key="d9">-75.7577682</data>
+      <data key="d10">39.6856574</data>
+    </node>
+    <node id="178654682">
+      <data key="d4">East Delaware Avenue &amp; South Chapel Street</data>
+      <data key="d5">436098.2563617371</data>
+      <data key="d6">4392750.530011393</data>
+      <data key="d7">0.4446140198188368</data>
+      <data key="d8">-0.10679064208362252</data>
+      <data key="d9">-75.7451703</data>
+      <data key="d10">39.6821972</data>
+    </node>
+    <node id="178655393">
+      <data key="d4">Prospect Avenue &amp; Wilbur Street &amp; North Street</data>
+      <data key="d5">435520.34124173</data>
+      <data key="d6">4393293.5377670005</data>
+      <data key="d7">-0.13330110018822597</data>
+      <data key="d8">0.43621711352374404</data>
+      <data key="d9">-75.751962</data>
+      <data key="d10">39.687046</data>
+    </node>
+    <edge source="178653617" target="178689387">
+      <data key="d11">183.87021839615363</data>
+      <data key="d12">East Cleveland Avenue</data>
+    </edge>
+    <edge source="178689387" target="178655393">
+      <data key="d11">109.33137869631216</data>
+      <data key="d12">Wilbur Street</data>
+    </edge>
+    <edge source="178689387" target="178685453">
+      <data key="d11">231.90788082715383</data>
+      <data key="d12">East Cleveland Avenue</data>
+    </edge>
+    <edge source="178661146" target="178685453">
+      <data key="d11">310.99599213348176</data>
+      <data key="d12">North College Avenue</data>
+    </edge>
+    <edge source="178661146" target="178633083">
+      <data key="d11">37.948165024245874</data>
+      <data key="d12">West Main Street</data>
+    </edge>
+    <edge source="178661146" target="2601214708">
+      <data key="d11">167.73207580082064</data>
+      <data key="d12">West Main Street</data>
+    </edge>
+    <edge source="178672994" target="178654675">
+      <data key="d11">178.07033341556513</data>
+      <data key="d12">South College Avenue</data>
+    </edge>
+    <edge source="178633085" target="178633083">
+      <data key="d11">366.619509653962</data>
+      <data key="d12">East Main Street</data>
+    </edge>
+    <edge source="178633085" target="178654676">
+      <data key="d11">150.3073306840103</data>
+      <data key="d12">Academy Street</data>
+    </edge>
+    <edge source="178633085" target="178633087">
+      <data key="d11">161.01698157958435</data>
+      <data key="d12">East Main Street</data>
+    </edge>
+    <edge source="178650877" target="178650875">
+      <data key="d11">201.0580188053391</data>
+      <data key="d12">Continental Avenue</data>
+    </edge>
+    <edge source="178633087" target="178654677">
+      <data key="d11">149.2273138944218</data>
+      <data key="d12">Haines Street</data>
+    </edge>
+    <edge source="178633087" target="178633089">
+      <data key="d11">169.44858543779685</data>
+      <data key="d12">East Main Street</data>
+    </edge>
+    <edge source="178674738" target="178674736">
+      <data key="d11">245.29133849310523</data>
+      <data key="d12">Lovett Avenue</data>
+    </edge>
+    <edge source="178674738" target="178650875">
+      <data key="d11">70.81120204811188</data>
+      <data key="d12">Haines Street</data>
+    </edge>
+    <edge source="178685453" target="178626526">
+      <data key="d11">106.72223153292222</data>
+      <data key="d12">North College Avenue</data>
+    </edge>
+    <edge source="178685453" target="178685457">
+      <data key="d11">285.4772058562894</data>
+      <data key="d12">West Cleveland Avenue</data>
+    </edge>
+    <edge source="178633089" target="178662847">
+      <data key="d11">243.09491337952383</data>
+      <data key="d12">North Chapel Street</data>
+    </edge>
+    <edge source="178633089" target="178654682">
+      <data key="d11">163.3030528003257</data>
+      <data key="d12">South Chapel Street</data>
+    </edge>
+    <edge source="178633089" target="3640983633">
+      <data key="d11">161.65565263116466</data>
+      <data key="d12">East Main Street</data>
+    </edge>
+    <edge source="178654676" target="178654675">
+      <data key="d11">356.64722636064295</data>
+      <data key="d12">East Delaware Avenue</data>
+    </edge>
+    <edge source="178654676" target="178654677">
+      <data key="d11">186.80637271127497</data>
+      <data key="d12">East Delaware Avenue</data>
+    </edge>
+    <edge source="178654676" target="178674736">
+      <data key="d11">267.327256719971</data>
+      <data key="d12">Academy Street</data>
+    </edge>
+    <edge source="178654677" target="178654682">
+      <data key="d11">184.61719947180728</data>
+      <data key="d12">East Delaware Avenue</data>
+    </edge>
+    <edge source="178654677" target="178650875">
+      <data key="d11">267.08154411811233</data>
+      <data key="d12">Haines Street</data>
+    </edge>
+    <edge source="178633083" target="178654675">
+      <data key="d11">151.98204523465955</data>
+      <data key="d12">South College Avenue</data>
+    </edge>
+    <edge source="178668015" target="178654675">
+      <data key="d11">146.86549456557418</data>
+      <data key="d12">West Delaware Avenue</data>
+    </edge>
+    <edge source="178626526" target="178655393">
+      <data key="d11">225.86220492792899</data>
+      <data key="d12">Prospect Avenue</data>
+    </edge>
+    <data key="d0">University of Delaware area, Newark</data>
+    <data key="d1">Streets around the university</data>
+    <data key="d2">Newark, New Castle County, Delaware, United States</data>
+    <data key="d3">true</data>
+  </graph>
+</graphml>

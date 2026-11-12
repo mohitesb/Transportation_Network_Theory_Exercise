@@ -1,0 +1,13 @@
+osmnx>=2.1
+networkx>=3.2
+igraph>=1.0
+matplotlib>=3.8
+streamlit>=1.40
+plotly>=5.20
+geopandas>=1.0
+shapely>=2.0
+pandas>=2.0
+numpy>=1.24
+scipy>=1.11
+pyproj>=3.5
+pyogrio>=0.7
