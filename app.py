@@ -21,10 +21,12 @@ from network_theory.centrality import compute_centrality, results_table
 from network_theory.errors import NetworkLabError
 from network_theory.load_network import (
     EXAMPLE_PATH,
+    MAX_DOWNLOAD_SQ_MILES,
     ROAD_KIND_DETAILS,
     ROAD_KINDS,
     PlaceInfo,
     RoadNetwork,
+    download_area_blocked,
     download_roads,
     find_place,
     load_example,
@@ -184,12 +186,12 @@ def _step_load() -> None:
 
 def _download_form() -> None:
     st.text_input(
-        "City, county, or state",
+        f"Town or city (up to {MAX_DOWNLOAD_SQ_MILES:,.0f} square miles)",
         key="place_query",
         placeholder="Lewes, Delaware, USA",
     )
     example_cols = st.columns(3)
-    examples = ("Newark, Delaware, USA", "Lewes, Delaware, USA", "Delaware, USA")
+    examples = ("Newark, Delaware, USA", "Lewes, Delaware, USA", "Wilmington, Delaware, USA")
     for column, name in zip(example_cols, examples, strict=True):
         column.button(name, on_click=_queue_query, args=(name,), width="stretch")
 
@@ -210,6 +212,9 @@ def _download_form() -> None:
         st.caption("Find the place first. You will see the area and a suggested road type before anything downloads.")
         return
 
+    if download_area_blocked(info.area_km2):
+        st.error(f"OpenStreetMap calls this: {info.official_name}\n\n{info.message}")
+        return
     st.info(f"OpenStreetMap calls this: {info.official_name}\n\n{info.message}")
     st.selectbox(
         "Which roads?",

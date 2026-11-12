@@ -11,6 +11,7 @@ import ast
 import io
 import json
 import math
+import os
 import shutil
 import tempfile
 import uuid
@@ -181,6 +182,34 @@ def recommend_kind(area_km2: float | None) -> tuple[str, str]:
     )
 
 
+# Largest place boundary the built-in OSMnx download will accept, in square miles.
+# Keeps classroom downloads small so many students can share one server.
+# Override without editing code: set LAB_MAX_DOWNLOAD_SQ_MILES (e.g. in Streamlit secrets or the shell).
+MAX_DOWNLOAD_SQ_MILES = float(os.environ.get("LAB_MAX_DOWNLOAD_SQ_MILES", "20"))
+
+
+def download_area_blocked(area_km2: float | None) -> bool:
+    """True when a place is too large (or its size is unknown) for the built-in download."""
+    if area_km2 is None:
+        return True
+    return to_square_miles(area_km2) > MAX_DOWNLOAD_SQ_MILES
+
+
+def download_area_message(area_km2: float | None) -> str:
+    limit = f"{MAX_DOWNLOAD_SQ_MILES:,.0f}"
+    if area_km2 is None:
+        return (
+            "OpenStreetMap did not return a boundary size for that place, so it cannot be downloaded here. "
+            f"Try a more specific town or city name (up to {limit} square miles)."
+        )
+    return (
+        f"This boundary is about {to_square_miles(area_km2):,.1f} square miles. "
+        f"In this lab, downloads are limited to places of {limit} square miles or less "
+        "so the whole class can share the server. Choose a smaller town or city, "
+        "or ask your instructor for a prepared network file to upload."
+    )
+
+
 def streets_are_blocked(kind: str, area_km2: float | None) -> bool:
     return kind in _HEAVY_KINDS and area_km2 is not None and area_km2 >= 20000
 
@@ -202,7 +231,9 @@ def find_place(query: str) -> PlaceInfo:
     official = str(boundary.iloc[0].get("display_name") or text)
     area = _area_km2(boundary)
     kind, message = recommend_kind(area)
-    if area is not None and area < 1:
+    if download_area_blocked(area):
+        message = download_area_message(area)
+    elif area is not None and area < 1:
         message = (
             "OpenStreetMap did not return a clear boundary for that name. "
             "Try a more specific query, such as Bend, Oregon, USA."
@@ -221,6 +252,8 @@ def download_roads(info: PlaceInfo, kind: str) -> RoadNetwork:
     configure_osm()
     if kind not in ROAD_KINDS:
         raise NetworkLabError("Choose a road type from the list.")
+    if download_area_blocked(info.area_km2):
+        raise NetworkLabError(download_area_message(info.area_km2))
     if streets_are_blocked(kind, info.area_km2):
         area = 0 if info.area_km2 is None else info.area_km2
         raise NetworkLabError(
