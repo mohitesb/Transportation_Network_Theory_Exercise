@@ -612,7 +612,7 @@ _MAP_CONFIG = {"scrollZoom": True, "displaylogo": False}
 def _explore_map(network: RoadNetwork, frame: pd.DataFrame, results) -> None:
     st.selectbox(
         "Centrality",
-        ["closeness", "betweenness", "degree"],
+        ["degree", "closeness", "betweenness"],
         format_func=lambda key: key.capitalize(),
         key="measure",
     )
