@@ -21,12 +21,10 @@ from network_theory.centrality import compute_centrality, results_table
 from network_theory.errors import NetworkLabError
 from network_theory.load_network import (
     EXAMPLE_PATH,
-    MAX_DOWNLOAD_SQ_MILES,
     ROAD_KIND_DETAILS,
     ROAD_KINDS,
     PlaceInfo,
     RoadNetwork,
-    download_area_blocked,
     download_roads,
     find_place,
     load_example,
@@ -36,7 +34,6 @@ from network_theory.load_network import (
     streets_need_confirm,
     to_miles,
     to_square_miles,
-    upload_limits_text,
 )
 from network_theory.plotting import (
     centrality_figure,
@@ -63,14 +60,14 @@ IDENTIFY_QUESTIONS = [
 
 QUESTIONS = [
     (
-        "q_station",
-        "A city can build one fire station and wants a short trip to a typical intersection. "
-        "Where on your map would you put the station?",
+        "q_between_place",
+        "A gas station wants to maximize the footfall from travelers."
+        "Where on your map would you put it?",
     ),
     (
-        "q_between_place",
-        "A town can build one rest stop for people traveling between other places. "
-        "Where on your map would you put it?",
+        "q_station",
+        "A city can build one fire station and wants a short trip to most intersections. "
+        "Where on your map would you put the station?",
     ),
     (
         "q_degree_place",
@@ -187,12 +184,12 @@ def _step_load() -> None:
 
 def _download_form() -> None:
     st.text_input(
-        f"Town or city (up to {MAX_DOWNLOAD_SQ_MILES:,.0f} square miles)",
+        "City, county, or state",
         key="place_query",
         placeholder="Lewes, Delaware, USA",
     )
     example_cols = st.columns(3)
-    examples = ("Newark, Delaware, USA", "Lewes, Delaware, USA", "Wilmington, Delaware, USA")
+    examples = ("Newark, Delaware, USA", "Lewes, Delaware, USA", "Delaware, USA")
     for column, name in zip(example_cols, examples, strict=True):
         column.button(name, on_click=_queue_query, args=(name,), width="stretch")
 
@@ -213,9 +210,6 @@ def _download_form() -> None:
         st.caption("Find the place first. You will see the area and a suggested road type before anything downloads.")
         return
 
-    if download_area_blocked(info.area_km2):
-        st.error(f"OpenStreetMap calls this: {info.official_name}\n\n{info.message}")
-        return
     st.info(f"OpenStreetMap calls this: {info.official_name}\n\n{info.message}")
     st.selectbox(
         "Which roads?",
@@ -279,13 +273,15 @@ def _upload_form() -> None:
     )
     st.caption("A town or city — every street")
     st.code('highway=* in "Newark, Delaware"', language=None)
-    st.caption("A town or city — main roads only (smaller file)")
-    st.code('highway~"motorway|trunk|primary|secondary" in "Wilmington, Delaware"', language=None)
-    st.warning(f"Size limit: {upload_limits_text()} Counties, states, and large cities are too big.")
-    with st.expander("Other files you already have"):
+    st.caption("A big city or a state — main roads only")
+    st.code('highway~"motorway|trunk|primary|secondary" in "Delaware"', language=None)
+    with st.expander("Whole state from Geofabrik, or another file you already have"):
         st.markdown(
-            "Other files that work: GeoJSON, `.osm`, GraphML, GeoPackage, a shapefile zip, "
-            "or a CSV with columns `source` and `target`. Your instructor may give you a GraphML file."
+            "For a state, you can also open [Geofabrik](https://download.geofabrik.de/), "
+            "choose the state, and download the **shapefile** (`.shp.zip`). Upload that zip. "
+            "A full state of local streets is too large, so the lab keeps main roads.\n\n"
+            "Other files that work: GeoJSON, `.osm`, GraphML, GeoPackage, "
+            "or a CSV with columns `source` and `target`."
         )
         st.write(
             "Intersections are where roads share a point. Bend points along one road are merged. "
@@ -521,7 +517,7 @@ def _ranked_intersections(frame: pd.DataFrame, measure: str) -> pd.DataFrame:
     """Top intersections for the table. Row order is what a click selects."""
     column = _rank_column(measure)
     ranked = frame.sort_values(column, ascending=False).head(12).reset_index(drop=True)
-    ranked.insert(0, "Rank", ranked.index + 1)
+    # ranked.insert(0, "Rank", ranked.index + 1)
     return ranked.rename(
         columns={
             "intersection": "Intersection",
@@ -588,7 +584,6 @@ def _top_table(frame: pd.DataFrame, measure: str, can_map: bool) -> None:
         selection_mode="single-row",
         key=_table_key(measure),
         column_order=[
-            "Rank",
             "Intersection",
             "Roads meeting",
             "Degree centrality",
