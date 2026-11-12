@@ -21,10 +21,12 @@ from network_theory.centrality import compute_centrality, results_table
 from network_theory.errors import NetworkLabError
 from network_theory.load_network import (
     EXAMPLE_PATH,
+    MAX_DOWNLOAD_SQ_MILES,
     ROAD_KIND_DETAILS,
     ROAD_KINDS,
     PlaceInfo,
     RoadNetwork,
+    download_area_blocked,
     download_roads,
     find_place,
     load_example,
@@ -34,6 +36,7 @@ from network_theory.load_network import (
     streets_need_confirm,
     to_miles,
     to_square_miles,
+    upload_limits_text,
 )
 from network_theory.plotting import (
     centrality_figure,
@@ -78,8 +81,9 @@ QUESTIONS = [
 
 MEASURE_TEXT = {
     "degree": (
-        "Color is how many roads meet at that intersection. "
-        "A dead end is dark blue. A junction where several streets come together is red."
+        "Color is degree centrality: the number of roads meeting at the intersection, "
+        "divided by (intersections − 1). A dead end is dark blue. "
+        "A junction where several streets come together is red."
     ),
     "betweenness": (
         "Color is how often the intersection sits on a shortest path between other places. "
@@ -184,12 +188,12 @@ def _step_load() -> None:
 
 def _download_form() -> None:
     st.text_input(
-        "City, county, or state",
+        f"Town or city (up to {MAX_DOWNLOAD_SQ_MILES:,.0f} square miles)",
         key="place_query",
         placeholder="Lewes, Delaware, USA",
     )
     example_cols = st.columns(3)
-    examples = ("Newark, Delaware, USA", "Lewes, Delaware, USA", "Delaware, USA")
+    examples = ("Newark, Delaware, USA", "Lewes, Delaware, USA", "Wilmington, Delaware, USA")
     for column, name in zip(example_cols, examples, strict=True):
         column.button(name, on_click=_queue_query, args=(name,), width="stretch")
 
@@ -210,6 +214,9 @@ def _download_form() -> None:
         st.caption("Find the place first. You will see the area and a suggested road type before anything downloads.")
         return
 
+    if download_area_blocked(info.area_km2):
+        st.error(f"OpenStreetMap calls this: {info.official_name}\n\n{info.message}")
+        return
     st.info(f"OpenStreetMap calls this: {info.official_name}\n\n{info.message}")
     st.selectbox(
         "Which roads?",
@@ -273,15 +280,13 @@ def _upload_form() -> None:
     )
     st.caption("A town or city — every street")
     st.code('highway=* in "Newark, Delaware"', language=None)
-    st.caption("A big city or a state — main roads only")
-    st.code('highway~"motorway|trunk|primary|secondary" in "Delaware"', language=None)
-    with st.expander("Whole state from Geofabrik, or another file you already have"):
+    st.caption("A town or city — main roads only (smaller file)")
+    st.code('highway~"motorway|trunk|primary|secondary" in "Wilmington, Delaware"', language=None)
+    st.warning(f"Size limit: {upload_limits_text()} Counties, states, and large cities are too big.")
+    with st.expander("Other files you already have"):
         st.markdown(
-            "For a state, you can also open [Geofabrik](https://download.geofabrik.de/), "
-            "choose the state, and download the **shapefile** (`.shp.zip`). Upload that zip. "
-            "A full state of local streets is too large, so the lab keeps main roads.\n\n"
-            "Other files that work: GeoJSON, `.osm`, GraphML, GeoPackage, "
-            "or a CSV with columns `source` and `target`."
+            "Other files that work: GeoJSON, `.osm`, GraphML, GeoPackage, a shapefile zip, "
+            "or a CSV with columns `source` and `target`. Your instructor may give you a GraphML file."
         )
         st.write(
             "Intersections are where roads share a point. Bend points along one road are merged. "
@@ -448,7 +453,7 @@ def _step_maps(network: RoadNetwork, results) -> None:
     weight = _weight_label(results.weighted)
     figure_columns = st.columns(3)
     softened = False
-    for column, measure in zip(figure_columns, ("closeness", "betweenness", "degree"), strict=True):
+    for column, measure in zip(figure_columns, ("degree", "betweenness", "closeness"), strict=True):
         with column:
             softened = _show_png(network, results, measure, place, weight) or softened
     if results.weighted:
@@ -506,7 +511,7 @@ def _show_png(network: RoadNetwork, results, measure: str, place: str, weight: s
 
 
 def _rank_column(measure: str) -> str:
-    return {"degree": "roads_meeting", "betweenness": "betweenness", "closeness": "closeness"}[measure]
+    return {"degree": "degree_centrality", "betweenness": "betweenness", "closeness": "closeness"}[measure]
 
 
 def _table_key(measure: str) -> str:
@@ -612,8 +617,8 @@ _MAP_CONFIG = {"scrollZoom": True, "displaylogo": False}
 def _explore_map(network: RoadNetwork, frame: pd.DataFrame, results) -> None:
     st.selectbox(
         "Centrality",
-        ["degree", "closeness", "betweenness"],
-        format_func=lambda key: key.capitalize(),
+        ["degree", "betweenness", "closeness"],
+        format_func=lambda key: f"{key.capitalize()} Centrality",
         key="measure",
     )
     st.markdown("**Explore on a street map**")
@@ -678,11 +683,11 @@ def _street_figure(plot_frame, column, colorbar, center, zoom, focus, pulse: boo
         height=640,
         map_style="open-street-map",
         labels={
-            column: colorbar,
             "degree_centrality": "Degree centrality",
             "roads_meeting": "Roads meeting",
             "betweenness": "Betweenness",
             "closeness": "Closeness",
+            column: colorbar,
         },
     )
     figure.update_layout(
@@ -810,7 +815,7 @@ def _submission_zip(network: RoadNetwork, results, frame: pd.DataFrame) -> bytes
     weight = _weight_label(results.weighted)
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_DEFLATED) as archive:
-        for measure in ("closeness", "betweenness", "degree"):
+        for measure in ("degree", "betweenness", "closeness"):
             values, left, colorbar, _column = _measure_bundle(results, measure, weight)
             vmin, vmax, _softened = color_limits(values, "auto", measure)
             figure = centrality_figure(
@@ -893,10 +898,10 @@ def _about() -> None:
 
 def _measure_bundle(results, measure: str, weight: str):
     if measure == "degree":
-        return results.degree_count, "Degree", "roads meeting", "roads_meeting"
+        return results.degree_centrality, "Degree", "Degree Centrality", "degree_centrality"
     if measure == "betweenness":
-        return results.betweenness, weight, "betweenness", "betweenness"
-    return results.closeness, weight, "closeness", "closeness"
+        return results.betweenness, weight, "Betweenness Centrality", "betweenness"
+    return results.closeness, weight, "Closeness Centrality", "closeness"
 
 
 def _results_if_current(network: RoadNetwork):

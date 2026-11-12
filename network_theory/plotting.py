@@ -59,8 +59,9 @@ def centrality_figure(
     ax.margins(0.03, 0.06)
     _room_for_titles(ax)
     _corner_titles(ax, left_label, place_name)
-    colorbar = fig.colorbar(scatter, ax=ax, fraction=0.035, pad=0.02)
-    _format_colorbar(colorbar, colorbar_label, vmin, vmax, integer=colorbar_label == "roads meeting")
+    # Extra pad leaves room for the label on the left of the bar.
+    colorbar = fig.colorbar(scatter, ax=ax, fraction=0.035, pad=0.10)
+    _format_colorbar(colorbar, colorbar_label, vmin, vmax, integer=False)
     if show_inset:
         _draw_inset(ax, network.graph, nodes, x, y, color, palette, vmin, vmax)
     fig.tight_layout()
@@ -101,7 +102,7 @@ def compare_figure(
             "",
             vmin,
             vmax,
-            integer=title.startswith("Degree"),
+            integer=False,
         )
     fig.suptitle(f"{weight_label}    {place_name}", fontsize=15, fontweight="bold", y=1.02)
     fig.tight_layout()
@@ -141,9 +142,9 @@ def lesson_figure() -> plt.Figure:
     graph, positions, labels = _lesson_graph()
     results = compute_centrality(graph, weighted=False, betweenness_mode="exact")
     panels = (
-        ("Degree\nroads meeting", results.degree_count),
-        ("Betweenness", results.betweenness),
-        ("Closeness", results.closeness),
+        ("Degree Centrality", results.degree_centrality),
+        ("Betweenness Centrality", results.betweenness),
+        ("Closeness Centrality", results.closeness),
     )
     fig, axes = plt.subplots(1, 3, figsize=(10.6, 3.6), dpi=120)
     fig.patch.set_facecolor("white")
@@ -366,13 +367,16 @@ def _room_for_titles(ax) -> None:
 def _format_colorbar(colorbar, label: str, vmin: float, vmax: float, *, integer: bool) -> None:
     if label:
         colorbar.set_label(label, fontsize=11)
+        # Label on the left of the bar, tick numbers on the right.
+        colorbar.ax.yaxis.set_label_position("left")
+        colorbar.ax.yaxis.set_ticks_position("right")
     colorbar.ax.tick_params(labelsize=9)
     if integer:
         colorbar.ax.yaxis.set_major_locator(MaxNLocator(integer=True))
         return
     span = abs(vmax - vmin)
     if 0 < span < 0.2:
-        decimals = min(4, max(3, int(-np.log10(span)) + 1))
+        decimals = min(6, max(3, int(-np.log10(span)) + 1))
         colorbar.ax.yaxis.set_major_formatter(FormatStrFormatter(f"%.{decimals}f"))
 
 
